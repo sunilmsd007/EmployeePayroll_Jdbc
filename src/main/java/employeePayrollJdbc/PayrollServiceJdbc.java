@@ -63,6 +63,18 @@ public class PayrollServiceJdbc {
 		}
 	}
 
+	// updating an employee salary using statement
+	public static void updateSalaryWithStatement() {
+		try {
+			Statement statement = connection.createStatement();
+			String query = "update employee_payroll set Salary=40000.00 where Name='Shyam'";
+			Integer recordUpdated = statement.executeUpdate(query);
+			System.out.println("records updated: " + recordUpdated);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// closing the connection
 	public static void closeConnection() {
 		try {
@@ -76,6 +88,8 @@ public class PayrollServiceJdbc {
 		loadingDriver();
 		listDrivers();
 		connectingDatabase();
+		display();
+		updateSalaryWithStatement();
 		display();
 		closeConnection();
 	}
