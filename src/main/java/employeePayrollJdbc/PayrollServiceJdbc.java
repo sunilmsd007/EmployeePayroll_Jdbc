@@ -3,7 +3,9 @@ package employeePayrollJdbc;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Enumeration;
 
 public class PayrollServiceJdbc {
@@ -43,6 +45,24 @@ public class PayrollServiceJdbc {
 		}
 	}
 
+	// retrieving all the employee records from the table
+	public static void display() {
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery("select * from employee_payroll");
+			System.out.println(result + " records affected");
+			while (result.next()) {
+				System.out.print("ID->" + result.getInt("ID") + " : ");
+				System.out.print("Name->" + result.getString("Name") + " : ");
+				System.out.print("Salary->" + result.getFloat("Salary") + " : ");
+				System.out.print("StartDate->" + result.getDate("StartDate"));
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// closing the connection
 	public static void closeConnection() {
 		try {
@@ -56,6 +76,7 @@ public class PayrollServiceJdbc {
 		loadingDriver();
 		listDrivers();
 		connectingDatabase();
+		display();
 		closeConnection();
 	}
 }
