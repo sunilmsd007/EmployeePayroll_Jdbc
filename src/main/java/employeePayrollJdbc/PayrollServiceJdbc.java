@@ -92,6 +92,25 @@ public class PayrollServiceJdbc {
 		}
 	}
 
+	// to retrieve all employees who have joined within particular date range
+	public static void displayRecordsWithinGivenDateRange() {
+		try {
+			Statement statement = connection.createStatement();
+			String query = "select * from employee_payroll where StartDate between '2022-07-01' and DATE(now())";
+			ResultSet result = statement.executeQuery(query);
+			System.out.println(result + " records affected");
+			while (result.next()) {
+				System.out.print("ID->" + result.getInt("ID") + " : ");
+				System.out.print("Name->" + result.getString("Name") + " : ");
+				System.out.print("Salary->" + result.getFloat("Salary") + " : ");
+				System.out.print("StartDate->" + result.getDate("StartDate"));
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// closing the connection
 	public static void closeConnection() {
 		try {
@@ -110,6 +129,7 @@ public class PayrollServiceJdbc {
 		display();
 		updateSalaryWithPreparedStatement();
 		display();
+		displayRecordsWithinGivenDateRange();
 		closeConnection();
 	}
 }
