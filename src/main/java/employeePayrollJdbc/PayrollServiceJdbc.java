@@ -111,6 +111,55 @@ public class PayrollServiceJdbc {
 		}
 	}
 
+	// to find sum, max, min, avg, count of male and female employees
+	public static void performAggregateFunctions() {
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement
+					.executeQuery("SELECT SUM(Salary), gender FROM employee_payroll GROUP BY gender;");
+			System.out.println("\n" + result + " records affected.");
+			System.out.println("\n:: Sum ::");
+			while (result.next()) {
+				System.out.print("SUM(Salary)->" + result.getString("SUM(Salary)") + " : ");
+				System.out.print("Gender->" + result.getString("Gender") + "\n");
+			}
+
+			result = statement.executeQuery("SELECT MIN(Salary), gender FROM employee_payroll GROUP BY gender;");
+			System.out.println("\n" + result + " records affected.");
+			System.out.println("\n:: Minimum ::");
+			while (result.next()) {
+				System.out.print("MIN(Salary)->" + result.getString("MIN(Salary)") + " : ");
+				System.out.print("Gender->" + result.getString("Gender") + "\n");
+			}
+
+			result = statement.executeQuery("SELECT MAX(Salary), gender FROM employee_payroll GROUP BY gender;");
+			System.out.println("\n" + result + " records affected.");
+			System.out.println("\n:: Maximum ::");
+			while (result.next()) {
+				System.out.print("MAX(Salary)->" + result.getString("MAX(Salary)") + " : ");
+				System.out.print("Gender->" + result.getString("Gender") + "\n");
+			}
+
+			result = statement.executeQuery("SELECT AVG(Salary), gender FROM employee_payroll GROUP BY gender;");
+			System.out.println("\n" + result + " records affected.");
+			System.out.println("\n:: Average ::");
+			while (result.next()) {
+				System.out.print("AVG(Salary)->" + result.getString("AVG(Salary)") + " : ");
+				System.out.print("Gender->" + result.getString("Gender") + "\n");
+			}
+
+			result = statement.executeQuery("SELECT COUNT(gender), gender FROM employee_payroll GROUP BY gender;");
+			System.out.println("\n" + result + " records affected.");
+			System.out.println("\n:: Employee Count ::");
+			while (result.next()) {
+				System.out.print("COUNT(gender)->" + result.getString("COUNT(gender)") + " : ");
+				System.out.print("Gender->" + result.getString("Gender") + "\n");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// closing the connection
 	public static void closeConnection() {
 		try {
@@ -130,6 +179,7 @@ public class PayrollServiceJdbc {
 		updateSalaryWithPreparedStatement();
 		display();
 		displayRecordsWithinGivenDateRange();
+		performAggregateFunctions();
 		closeConnection();
 	}
 }
