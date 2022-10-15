@@ -3,6 +3,7 @@ package employeePayrollJdbc;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -75,6 +76,22 @@ public class PayrollServiceJdbc {
 		}
 	}
 
+	// updating salary of an employee using prepared statement
+	public static void updateSalaryWithPreparedStatement() {
+		try {
+			String whereCondition = "where name=?";
+			String query = "UPDATE employee_payroll set Salary=?" + whereCondition;
+			PreparedStatement preparedstatement = connection.prepareStatement(query);
+			preparedstatement.setFloat(1, (float) 40000.00);
+			preparedstatement.setString(2, "Sita");
+			Integer recordUpdated = preparedstatement.executeUpdate();
+			System.out.println("records updated: " + recordUpdated);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// closing the connection
 	public static void closeConnection() {
 		try {
@@ -90,6 +107,8 @@ public class PayrollServiceJdbc {
 		connectingDatabase();
 		display();
 		updateSalaryWithStatement();
+		display();
+		updateSalaryWithPreparedStatement();
 		display();
 		closeConnection();
 	}
