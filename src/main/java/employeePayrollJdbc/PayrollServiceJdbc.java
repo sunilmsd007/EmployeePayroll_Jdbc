@@ -160,6 +160,26 @@ public class PayrollServiceJdbc {
 		}
 	}
 
+	// to retrieve payroll data by employee name
+	public static void retrievePayrollDataByName() {
+		try {
+			String query = "Select * from Employee_payroll where Name=?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, "Sunil");
+			ResultSet result = preparedStatement.executeQuery();
+			System.out.println("\n" + result + " records retrieved.");
+			while (result.next()) {
+				System.out.print("ID->" + result.getInt("ID") + " : ");
+				System.out.print("Name->" + result.getString("Name") + " : ");
+				System.out.print("Salary->" + result.getString("Salary") + " : ");
+				System.out.print("StartDate->" + result.getString("StartDate") + " : ");
+				System.out.print("Gender->" + result.getString("Gender") + "\n");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// closing the connection
 	public static void closeConnection() {
 		try {
@@ -180,6 +200,7 @@ public class PayrollServiceJdbc {
 		display();
 		displayRecordsWithinGivenDateRange();
 		performAggregateFunctions();
+		retrievePayrollDataByName();
 		closeConnection();
 	}
 }
