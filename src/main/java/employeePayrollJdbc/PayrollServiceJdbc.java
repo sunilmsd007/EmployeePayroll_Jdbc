@@ -56,6 +56,7 @@ public class PayrollServiceJdbc {
 				System.out.print("ID->" + result.getInt("ID") + " : ");
 				System.out.print("Name->" + result.getString("Name") + " : ");
 				System.out.print("Salary->" + result.getFloat("Salary") + " : ");
+				System.out.print("gender->" + result.getString("gender") + " : ");
 				System.out.print("StartDate->" + result.getDate("StartDate"));
 				System.out.println();
 			}
@@ -71,6 +72,7 @@ public class PayrollServiceJdbc {
 			String query = "update employee_payroll set Salary=40000.00 where Name='Shyam'";
 			Integer recordUpdated = statement.executeUpdate(query);
 			System.out.println("records updated: " + recordUpdated);
+			display();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +88,7 @@ public class PayrollServiceJdbc {
 			preparedstatement.setString(2, "Sita");
 			Integer recordUpdated = preparedstatement.executeUpdate();
 			System.out.println("records updated: " + recordUpdated);
-
+			display();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -180,6 +182,24 @@ public class PayrollServiceJdbc {
 		}
 	}
 
+	// to add a new employee to the table
+	public static void insertEmployeeIntoTable() {
+		try {
+			String query = "insert into employee_payroll values(?, ?, ?, ?, ?)";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, 8);
+			preparedStatement.setString(2, "Saanvi");
+			preparedStatement.setString(3, "F");
+			preparedStatement.setFloat(4, (float) 45000.00);
+			preparedStatement.setDate(5, java.sql.Date.valueOf("2021-02-09"));
+			Integer result = preparedStatement.executeUpdate();
+			System.out.println(result + " records affected");
+			display();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// closing the connection
 	public static void closeConnection() {
 		try {
@@ -195,12 +215,11 @@ public class PayrollServiceJdbc {
 		connectingDatabase();
 		display();
 		updateSalaryWithStatement();
-		display();
 		updateSalaryWithPreparedStatement();
-		display();
 		displayRecordsWithinGivenDateRange();
 		performAggregateFunctions();
 		retrievePayrollDataByName();
+		insertEmployeeIntoTable();
 		closeConnection();
 	}
 }
